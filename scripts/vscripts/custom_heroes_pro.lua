@@ -71,14 +71,18 @@ function custom_heroes_pro:UpdatePlayerData(playerID)
 	self.Players[playerID] = self.Players[playerID] or {}
 
 	local data = self:BuildPlayerData(playerID)
+	self.Players[playerID].id = data.id
 	self.Players[playerID].player = data.player
 	self.Players[playerID].hero_name = data.hero
 	self.Players[playerID].team_name = data.team_name
 	self.Players[playerID].gold = data.gold
 
-	utils:setDataCNT(playerID, PLAYER_INFO_CNT, data)
-	
-	print("ZXC", utils:getDataCNT(playerID, PLAYER_INFO_CNT).team_name)
+	utils:setDataCNT(playerID, PLAYER_INFO_CNT, {
+		id = data.id,
+		hero = data.hero,
+		team_name = data.team_name,
+		gold = data.gold,
+	})
 end
 
 function custom_heroes_pro:InitGameMode()
@@ -151,8 +155,6 @@ end
 
 function custom_heroes_pro:chpStart()
 	print("CUSTOM HEROES PRO START")
-	
-	
 end
 
 function custom_heroes_pro:OnNPCSpawned(data)
