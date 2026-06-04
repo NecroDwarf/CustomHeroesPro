@@ -55,7 +55,8 @@ function custom_heroes_pro:BuildPlayerData(playerID)
 	local gold = PlayerResource:GetGold(playerID)
 
 	return {
-		player = playerID,
+		id = playerID,
+		player = player,
 		hero = hero and hero:GetUnitName() or "",
 		team_name = self:GetTeamName(teamNumber),
 		gold = gold,
@@ -76,6 +77,8 @@ function custom_heroes_pro:UpdatePlayerData(playerID)
 	self.Players[playerID].gold = data.gold
 
 	utils:setDataCNT(playerID, PLAYER_INFO_CNT, data)
+	
+	print("ZXC", utils:getDataCNT(playerID, PLAYER_INFO_CNT).team_name)
 end
 
 function custom_heroes_pro:InitGameMode()
@@ -172,7 +175,7 @@ function custom_heroes_pro:OnNPCSpawned(data)
 	-- Сохраняем героя игрока
 	self.Players[playerID] = self.Players[playerID] or {}
 	self.Players[playerID].hero = unit
-	self:UpdatePlayerPanoramaData(playerID)
+	self:UpdatePlayerData(playerID)
 
 	-- Отключаем респавн конкретно этому герою на всякий случай
 	if unit.SetRespawnsDisabled then
@@ -284,7 +287,6 @@ function custom_heroes_pro:OnPlayerConnectFull(data)
 
 	self.Players[playerID] = self.Players[playerID] or {}
 	self.Players[playerID].connected = true
-	self.Players[playerID].Id = playerID
 	self:UpdatePlayerData(playerID)
 
 	print("Player connected full:", playerID)
